@@ -37,5 +37,3 @@ function processInputChange(e) {
 
 
 
-
-// KEEPING TRACK OF CART USING JAVASCRIOPT W/O ACCOUNT

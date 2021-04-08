@@ -12,6 +12,7 @@ if (isset($_GET["orderNum"]) && isset($_GET["col"]) && isset($_GET["new"])) {
     header('Location: '.$_SERVER['PHP_SELF']);  
 }
 
+
 ?>
 
 <!-- PAGE TILE -->
@@ -123,19 +124,6 @@ if (isset($_GET["orderNum"]) && isset($_GET["col"]) && isset($_GET["new"])) {
                 <form action=" <?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
                     <button class="btn-lg btn-danger" name="deleteInventoryBtn">Delete Order</button>
                 </form>
-                
-                <!-- DELETING ORDER FROM DATABASE -->
-                <?php 
-                    if (isset($_POST['deleteOrderBtn'])) {
-                        if (!$conn){
-                           echo "Could not delete info; could not fetch car ID to delete";  
-                        } else {
-                            $deleteOrderSql = mysqli_query($conn, "DELETE FROM orders WHERE orderNum LIKE '$row[orderNum]");
-                            echo "Car with Id ".$row['id']." has been deleted, no information will be displayed";
-                        }
-                    } 
-                ?>
-
             </div>
 
             <div class="modal-footer">

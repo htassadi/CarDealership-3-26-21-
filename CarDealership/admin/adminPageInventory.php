@@ -12,6 +12,27 @@ if (isset($_GET["id"]) && isset($_GET["col"]) && isset($_GET["new"])) {
     header('Location: '.$_SERVER['PHP_SELF']);  
 }
 
+
+//ADD TO INVETORY
+if (isset($_POST["addInventoryBtn"])) {
+    mysqli_query($conn,"INSERT INTO car_lineup (brand, model, type, year, exterior, interior, price, sale, stock) 
+                            VALUES ('$_POST[newInventoryBrand])', '$_POST[newInventoryModel])', '$_POST[newInventoryType])',
+                            '$_POST[newInventoryYear])', '$_POST[newInventoryExterior])','$_POST[newInventoryInterior])',
+                            '$_POST[newInventoryPrice])', '$_POST[newInventorySale])', '$_POST[newInventoryStock])' ");
+    header('Location: '.$_SERVER['PHP_SELF']);  
+}
+
+
+// <!-- DELETING FROM DATABASE -->         
+if (isset($_POST['deleteInventoryBtn'])) {
+    if (!$conn){
+        echo "Could not delete info; could not fetch car ID to delete";  
+    }
+    
+    mysqli_query($conn, "DELETE FROM car_lineup WHERE id LIKE '$row[id]'");
+    echo "Car with Id ".$row['id']." has been deleted, no information of this invetory will be displayed";
+} 
+   
 ?>
 
 <!-- PAGE TILE -->
@@ -81,7 +102,7 @@ if (isset($_GET["id"]) && isset($_GET["col"]) && isset($_GET["new"])) {
                             
                             <td id="editible" data-prop="price"><?php echo $row['price']; ?></td>
 
-                            <td><button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#deleteInventoryModal"><ion-icon name="trash"></ion-icon></button></td>
+                            <td><button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#deleteInventoryModal" <?php echo $row['id'];?>><ion-icon name="trash"></ion-icon></button></td>
 
                         </tr>
                 <?php
@@ -113,15 +134,15 @@ if (isset($_GET["id"]) && isset($_GET["col"]) && isset($_GET["new"])) {
                 <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
                 
                     <label class="form-label">Brand</label>
-                    <input class="form-control">
+                    <input class="form-control <?php echo htmlspecialchars($_POST['newInventoryBrand']); ?>">
 
                     <label class="form-label">Model</label>
-                    <input class="form-control">
+                    <input class="form-control <?php echo htmlspecialchars($_POST['newInventoryModel']); ?>">
 
                     <div class="row m-2">
                         <div class="col">
                             <label class="form-label">Type</label>
-                            <select id="inputType" class="form-control">
+                            <select id="inputType" class="form-control" <?php echo htmlspecialchars($_POST['newInventoryType']); ?>>
                                 <option selected>Choose...</option>
                                 <option>Trucks</option>
                                 <option>Sedans</option>
@@ -130,35 +151,34 @@ if (isset($_GET["id"]) && isset($_GET["col"]) && isset($_GET["new"])) {
                                 <option>Luxury Crossovers and SUVs</option>
                                 <option>Luxury Sedan</option>
                                 <option>Super Car</option>
-
                             </select>
                         </div>
 
                         <div class="col">
                             <label class="form-label">Year</label>
-                                <input class="form-control">
+                                <input class="form-control" <?php echo htmlspecialchars($_POST['newInventoryYear']); ?>> 
                         </div>
                     </div>
 
                     <label class="form-label">Exterior Image</label>
-                        <input class="form-control">
+                        <input class="form-control" <?php echo htmlspecialchars($_POST['newInventoryExterior']); ?>>
 
                     <label class="form-label">Interior Image</label>
-                        <input class="form-control">
+                        <input class="form-control" <?php echo htmlspecialchars($_POST['newInventoryInterior']); ?>>
 
                     <div class="row m-2">
                         <div class="col">
                             <label class="form-label">Price</label>
-                                <input class="form-control">
+                                <input class="form-control" <?php echo htmlspecialchars($_POST['newInventoryPrice']); ?>>
                         </div>
                         <div class="col">
                             <label class="form-label">Stock</label>
-                                <input class="form-control">
+                                <input class="form-control" <?php echo htmlspecialchars($_POST['newInventoryStock']); ?>>
                         </div>
                     </div>
 
                     <div class="row m-4">
-                        <button type="submit" name="submitbtn" value="submit" class="btn btn-warning btn-lg"><ion-icon name="cloud-upload"></ion-icon></button>
+                        <button type="submit" name="addInventoryBtn" value="submit" class="btn btn-warning btn-lg"><ion-icon name="cloud-upload"></ion-icon></button>
                     </div>
 
                 </form>
@@ -186,19 +206,6 @@ if (isset($_GET["id"]) && isset($_GET["col"]) && isset($_GET["new"])) {
                 <form action=" <?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
                     <button class="btn-lg btn-danger" name="deleteInventoryBtn">Delete Info</button>
                 </form>
-                
-                <!-- DELETING FROM DATABASE -->
-                <?php 
-                    if (isset($_POST['deleteInventoryBtn'])) {
-                        if (!$conn){
-                           echo "Could not delete info; could not fetch car ID to delete";  
-                        }
-                        $deleteInventorySql = mysqli_query($conn, "DELETE FROM car_lineup WHERE id LIKE '$row[id]");
-                        echo "Car with Id ".$row['id']." has been deleted, no information will be displayed";
-                        
-                    } 
-                ?>
-
             </div>
 
             <div class="modal-footer">

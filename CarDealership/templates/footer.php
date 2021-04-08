@@ -6,14 +6,14 @@
 <!-- FOOTER -->
 <nav class="navbar bg-dark"> 
     <div class="row mx-auto p-3">
-        <div class="col-12 col-md px-lg-5 mx-auto">
+        <div class="col-md-3 px-lg-5 mx-auto">
             <a class="py-2 text-warning text-lg" href="#">
             <ion-icon size="large" name="car-sport-sharp"></ion-icon>
             </a>
           <small class="d-block mb-3 text-muted">© 2021</small>
         </div>
 
-        <div class="col-6 col-md px-lg-5">
+        <div class="col-md-2 px-lg-5 ">
           <h5 class="text-warning">Products</h5>
           <ul class="list-unstyled text-small">
             <li><a class="text-muted" href="#">Cool stuff</a></li>
@@ -21,7 +21,7 @@
           </ul>
         </div>
 
-        <div class="col-6 col-md px-lg-5">
+        <div class="col-md-2 px-lg-5 ">
           <h5 class="text-warning">Features</h5>
           <ul class="list-unstyled text-small">
             <li><a class="text-muted" href="#"> Luxury</a></li>
@@ -30,16 +30,15 @@
           </ul>
         </div>
 
-        <div class="col-6 col-md px-lg-5">
-          <h5 class="text-warning" >Accounts</h5>
+        <div class="col-md-3 px-lg-5 ">
+          <h5 class="text-warning">Careers</h5>
           <ul class="list-unstyled text-small">
-            <li><a class="text-muted" href="#">Login</a></li>
-            <li><a class="text-muted" href="#">Sign Up</a></li>
-            <li><a class="text-muted" href="#">Benifits</a></li>
+            <li><a class="text-muted" href="#">Profile Login</a></li>
+            <li><a class="text-muted" href="#">Apply Now</a></li>
           </ul>
         </div>
 
-        <div class="col-6 col-md px-lg-5">
+        <div class="col-md-2 px-lg-3">
           <h5 class="text-warning" >Admin</h5>
           <ul class="list-unstyled text-small">
             <li><a class="text-muted" href="#">Products</a></li>

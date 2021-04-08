@@ -19,8 +19,30 @@ if($_SESSION['cartItemsIds'] != []) {
     }
 }
 
-if(isset($_POST['removeItemFromCartBtn'])){
+//Removing Cart Items
+if (isset($_POST['removeItemFromCartBtn'])){
     $shoppingCartArray=[];
+}
+
+
+//Uploading order to Database for admin to see/change
+if (isset($_POST['submitPaymentBtn'])){
+    $orderPrice = number_format(((int)(str_replace(",", '', $shoppingCartArray[0]['price']))* 1.05) * 1.0725, 2);
+    $orderModel =json_encode($shoppingCartArray[0]['model']);
+    $orderBrand = json_encode($shoppingCartArray[0]['brand']);
+    $carId = (int)($shoppingCartArray[0]['id']);
+
+    // <!-- Add order to orders database -->
+    mysqli_query($conn,"INSERT INTO orders (brandOrderd, modelOrderd, orderPrice, payed, status, car_id) 
+                            VALUES ('$orderBrand', '$orderModel', '$orderPrice', 'Pending','Pending', '$carId' )");
+
+    // <!-- Clear cart array -->
+    $shoppingCartArray=[];
+
+    // Alert that the payemnt was confimed -->
+    echo '<script>alert("Congratualtions! Aww yeah, you successfully completed your transaction on your future car! Let us know your thoughts on your expirence and your opinons about our line up of cars! ")</script>';
+    
+    header('Location:home.php');  
 }
 
 
@@ -102,17 +124,94 @@ if(isset($_POST['removeItemFromCartBtn'])){
                         <h4>Total: <div class="text-right">$<?php echo number_format(((int)(str_replace(",", '', $shoppingCartArray[0]["price"]))* 1.05) * 1.0725, 2);?></div></h4>
                 </div>
 
+                <button class="btn-lg btn-dark text-warning mx-auto" data-bs-toggle="modal" data-bs-target="#processPaymentModal"><strong> Process Payment </strong></button>
+
+
                 <!-- COMPLETE TRANSACTION -->
-                <button class="btn-lg btn-dark text-warning mx-auto"><strong> Process Payment </strong></button>
                 
                 <?php } else { 
                     echo "Add Items to cart to display infromation";
                 } 
                 ?>
-
             </div>
         </div>
     </div>
+</div>
+
+
+<!-- Prossess payement modal -->
+<div id="processPaymentModal" class="modal fade " tabindex="-1" role="dialog" aria-labelledby="processPaymentModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" style="font-weight:bold">Process & Complete Payment</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <!-- Display Item -->
+                <h6><strong>Subtotal: </strong> <?php echo number_format(((int)(str_replace(",", '', $shoppingCartArray[0]["price"]))* 1.05),2);?> </h4>
+                <h6><strong>Tax (7.25%):</strong> <?php echo number_format(((int)(str_replace(",", '', $shoppingCartArray[0]["price"]))* 1.05) * 0.0725,2);?></h4>
+                <hr>
+                <div class="text-right bg-warning p-2" style="font-weight:100;"><h4>Total: $<?php echo  number_format(((int)(str_replace(",", '', $shoppingCartArray[0]["price"]))* 1.05) * 1.0725, 2);?></h4></div>
+            
+            <!--Display information in Form form for porcessing-->
+
+            <div class="container">
+                <form class="mt-4" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
+                    <div>
+                        <h3>Account Info</h3>
+                        <div class="row">
+                            <div class="col-md-6"> <input type="text" class="form-control" placeholder="Name" required> </div>
+                            <div class="col-md-6"> <input type="text" class="form-control" placeholder="Email" required> </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-6"> <input type="text" class="form-control" placeholder="Password" required> </div>
+                            <div class="col-md-6"> <input type="text" class="form-control" placeholder="Repeat password" required> </div>
+                        </div>
+                    </div>
+        
+                    <br>
+                    <div>
+                        <h3>Personal Info</h3>
+                        <div class="row">
+                            <div class="col-md-6"> <input type="text" class="form-control" placeholder="Address" required> </div>
+                            <div class="col-md-6"> <input type="text" class="form-control" placeholder="City" required> </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-6"> <input type="text" class="form-control" placeholder="State" required> </div>
+                            <div class="col-md-6"> <input type="text" class="form-control" placeholder="Country" required> </div>
+                        </div>
+                    </div>
+
+                    <br>
+                    <div>
+                        <h3>Personal Info</h3>
+                        <div class="row">
+                            <div class="col-md-6"> <input type="text" class="form-control" placeholder="Card Number" required> </div>
+                            <div class="col-md-6"> <input type="text" class="form-control" placeholder="Card Holder Name" required> </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-6"> <input type="text" class="form-control" placeholder="CVV" required> </div>
+                            <div class="col-md-6"> <input type="text" class="form-control" placeholder="Mobile Number" required> </div>
+                        </div>
+                    </div>
+                    <br>
+                    
+                    <button class='btn btn-danger' type="submit" name="submitPaymentBtn" value="submit">Confirm & Submit Payment</button>
+                </form>
+            </div>
+        </div>
+
+
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>  
+    </div>
+  </div>
 </div>
 
 
@@ -120,3 +219,4 @@ if(isset($_POST['removeItemFromCartBtn'])){
 
 <!-- FOOTER INLCUDED -->
 <?php include('../templates/footer.php'); ?>
+
